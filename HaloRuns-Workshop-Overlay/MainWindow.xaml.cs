@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Security.Policy;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -30,7 +32,6 @@ namespace HaloRuns_Workshop_Overlay
             InitializeTextBoxes();
         }
             
-
         private void InitializeConfig()
         {
             // Create config instance and load config if possible
@@ -41,7 +42,7 @@ namespace HaloRuns_Workshop_Overlay
             if (lsParams == null)
             {
                 lsParams = new AppConfig.ConfigParams();
-                lsParams.mcAutoSearchLocation = srcDefaultSearchLocation;
+                lsParams.mcAutoSearchLocation = scDefaultSearchLocation;
 
                 // See if we can find the game and/or mod. We will ignore any errors since this is just startup
                 string lcGameLoc;
@@ -86,7 +87,100 @@ namespace HaloRuns_Workshop_Overlay
             mcModLocBox.Text = lsParams.mcModLocation;
         }
 
-        public static string srcDefaultSearchLocation = "C:\\Program Files (x86)\\Steam\\steamapps";
+        private void OnClick_ChangeGameLocation(object sender, EventArgs e)
+        {
+            // Open folder dialogue
+            string? lcNewFolder = FileDialogue.OpenFolder(
+                mcGameLocBox.Text.Replace("/", "\\"), 
+                "Select Halo 1 maps folder");
+
+            if(lcNewFolder != null)
+            {
+                mcGameLocBox.Text = lcNewFolder;
+            }
+        }
+
+        private void OnClick_ChangeModLocation(object sender, EventArgs e)
+        {
+            // Open folder dialogue
+            string? lcNewFolder = FileDialogue.OpenFolder(
+                mcModLocBox.Text.Replace("/", "\\"),
+                "Select Classic Mod maps folder");
+
+            if (lcNewFolder != null)
+            {
+                mcModLocBox.Text = lcNewFolder;
+            }
+        }
+
+        private void OnClick_OverlayClassic(object sender, EventArgs e)
+        {
+            Overlay.OverlayClassicMod(
+                mcGameLocBox.Text.Replace("/", "\\"),
+                mcModLocBox.Text.Replace("/", "\\"));
+        }
+
+        private void OnClick_MccRestore(object sender, EventArgs e)
+        {
+            Overlay.RestoreMcc(
+                mcGameLocBox.Text.Replace("/", "\\"));
+        }
+
+        private void OnClick_AutoFind(object sender, EventArgs e)
+        {
+            // Get params
+            AppConfig.ConfigParams? lsParams = AppConfig.GetInstance().ReadFromConfig();
+            if(lsParams == null)
+            {
+                lsParams = new AppConfig.ConfigParams();
+                lsParams.mcAutoSearchLocation = scDefaultSearchLocation;
+            }
+
+            string? lcSearchLoc = FileDialogue.OpenFolder(lsParams.mcAutoSearchLocation, "Open steamapps folder");
+            if(lcSearchLoc == null)
+            {
+                return;
+            }
+
+            string lcGameLoc;
+            string lcModLoc;
+            string lcErrStr;
+
+            bool lbStatus = SteamSearch.FindGameLocation(lcSearchLoc, out lcGameLoc, out lcErrStr);
+            if(!lbStatus)
+            {
+                MessageBox.Show($"Error finding H1 Maps:\n{lcErrStr}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            mcGameLocBox.Text = lcGameLoc;
+
+            lbStatus = SteamSearch.FindModLocation(lcSearchLoc, out lcModLoc, out lcErrStr);
+            if (!lbStatus)
+            {
+                MessageBox.Show($"Error finding Classic Workshop installation:\n{lcErrStr}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            mcModLocBox.Text = lcModLoc;
+
+            // If here write out new values
+            lsParams.mcAutoSearchLocation = lcSearchLoc;
+            lsParams.mcGameLocation = lcGameLoc;
+            lsParams.mcModLocation = lcModLoc;
+
+            AppConfig.GetInstance().WriteToConfig(lsParams);
+
+            MessageBox.Show($"Successfully found MCC and Mod Installation!", "Success!", MessageBoxButton.OK, MessageBoxImage.None);
+        }
+
+        private void OnClick_OpenWorkshop(object sender, EventArgs e)
+        {
+            Process.Start(new ProcessStartInfo(scWorkshopLink) { UseShellExecute = true });
+        }
+
+        public static string scDefaultSearchLocation = "C:\\Program Files (x86)\\Steam\\steamapps";
+        public static string scWorkshopLink = "https://steamcommunity.com/sharedfiles/filedetails/?id=3249878452";
 
         private TextBox mcGameLocBox;
         private TextBox mcModLocBox;

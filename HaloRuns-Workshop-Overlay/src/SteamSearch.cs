@@ -11,22 +11,28 @@ namespace HaloRuns_Workshop_Overlay.src
             arcGameLocation = string.Empty;
             arcErrStr = string.Empty;
 
-            string lcMccLoc = $"{acPathToSearch}/common/{scGameName}";
+            string lcMccLoc = $"{acPathToSearch}/common/{scGameName}".Replace("/", "\\");
             if(!Directory.Exists(lcMccLoc))
             {
-                arcErrStr = $"MCC not found at {lcMccLoc}";
+                arcErrStr = $"MCC not found";
                 return false;
             }
 
-            string lcGameLoc = $"{lcMccLoc}/halo1/maps";
+            string lcGameLoc = $"{lcMccLoc}/halo1/maps".Replace("/","\\");
             if (!Directory.Exists(lcGameLoc))
             {
-                arcErrStr = $"Halo 1 installation map files not found at {lcGameLoc}. Is Halo 1 installed?";
+                arcErrStr = $"Halo 1 installation map folder not found. Is Halo 1 installed?";
+                return false;
+            }
+
+            if(!H1Maps.VerifyMapsExist(lcGameLoc))
+            {
+                arcErrStr = $"Halo 1 installation map files not found. You may need to verify game files or re-install Halo 1.";
                 return false;
             }
 
             // If here we are good
-            arcGameLocation = lcGameLoc.Replace("\\","/");
+            arcGameLocation = lcGameLoc;
             return true;
         }
 
@@ -38,15 +44,21 @@ namespace HaloRuns_Workshop_Overlay.src
             arcMod = string.Empty;
             arcErrStr = string.Empty;
 
-            string lcModLoc = $"{acPathToSearch}/workshop/content/{scGameId}/{scModId}/maps";
+            string lcModLoc = $"{acPathToSearch}/workshop/content/{scGameId}/{scModId}/maps".Replace("/", "\\");
             if (!Directory.Exists(lcModLoc))
             {
-                arcErrStr = $"Workshop mod not found at {lcModLoc}. Make sure the Classic Mod is installed on the Steam Workshop page.";
+                arcErrStr = $"Workshop Mod folder not found. Make sure the Classic Mod is installed on the Steam Workshop page.";
+                return false;
+            }
+
+            if (!H1Maps.VerifyMapsExist(lcModLoc))
+            {
+                arcErrStr = $"Workshop Mod map files not found. You may need to reinstall the Classic Mod from the Steam Workshop.";
                 return false;
             }
 
             // If here we are good
-            arcMod = lcModLoc.Replace("\\", "/");
+            arcMod = lcModLoc;
             return true;
         }
 
