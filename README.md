@@ -6,6 +6,9 @@ This exists because the steam workshop menu in MCC is extremely prone to crashin
 You can install the Classic Mod for Halo CE here:
 https://steamcommunity.com/sharedfiles/filedetails/?id=3249878452
 
+You may need to install .NET 8:
+https://dotnet.microsoft.com/en-us/download/dotnet/8.0
+
 ## How To
 Recommend using the "Steam Search" button and pointing it to your "steamapps" folder that you have both your MCC and Mod downloaded to. The fields will auto-populate and get you up and rolling faster (if you have MCC and Mod installed to your C: drive, this happens automagically at startup).
 
