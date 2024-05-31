@@ -1,6 +1,4 @@
-﻿
-
-using System.IO;
+﻿using System.IO;
 
 namespace HaloRuns_Workshop_Overlay.src
 {
