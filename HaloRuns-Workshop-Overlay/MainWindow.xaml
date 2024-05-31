@@ -36,7 +36,7 @@
         
         <!-- Refresh and Mod -->
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Top" Orientation="Vertical">
-            <Button Name="Button_AutoFind" Width="125" Margin="0 0 0 10" Click="OnClick_AutoFind">Auto Find</Button>
+            <Button Name="Button_AutoFind" Width="125" Margin="0 0 0 10" Click="OnClick_AutoFind">Steam Search</Button>
             <Button Name="Button_WorkshopMod" Width="125" Click="OnClick_OpenWorkshop">Workshop Mod</Button>
         </StackPanel>
 
