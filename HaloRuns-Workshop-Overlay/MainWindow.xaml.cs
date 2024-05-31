@@ -34,25 +34,25 @@ namespace HaloRuns_Workshop_Overlay
         private void InitializeConfig()
         {
             // Create config instance and load config if possible
-            AppConfig.CreateInstance(srcJsonConfig);
+            AppConfig.CreateInstance(scJsonConfig);
 
             // Set up defaults if we couldn't load config file
             AppConfig.ConfigParams? lsParams = AppConfig.GetInstance().ReadFromConfig();
             if (lsParams == null)
             {
                 lsParams = new AppConfig.ConfigParams();
-                lsParams.mrcAutoSearchLocation = srcDefaultSearchLocation;
+                lsParams.mcAutoSearchLocation = srcDefaultSearchLocation;
 
                 // See if we can find the game and/or mod. We will ignore any errors since this is just startup
                 string lcGameLoc;
                 string lcModLoc;
                 string lcErrStr;
-                SteamSearch.FindGameLocation(lsParams.mrcAutoSearchLocation, out lcGameLoc, out lcErrStr);
-                SteamSearch.FindModLocation(lsParams.mrcAutoSearchLocation, out lcModLoc, out lcErrStr);
+                SteamSearch.FindGameLocation(lsParams.mcAutoSearchLocation, out lcGameLoc, out lcErrStr);
+                SteamSearch.FindModLocation(lsParams.mcAutoSearchLocation, out lcModLoc, out lcErrStr);
 
                 // If error, the out strings were set to empty which suffices here
-                lsParams.mrcGameLocation = lcGameLoc;
-                lsParams.mrcModLocation = lcModLoc;
+                lsParams.mcGameLocation = lcGameLoc;
+                lsParams.mcModLocation = lcModLoc;
 
                 // Write out config
                 AppConfig.GetInstance().WriteToConfig(lsParams);
@@ -61,14 +61,14 @@ namespace HaloRuns_Workshop_Overlay
 
         private void InitializeTextBoxes()
         {
-            TextBox? lrcGameLoc = this.FindName("TextBox_GameLocation") as TextBox;
-            if(lrcGameLoc == null)
+            TextBox? lcGameLoc = this.FindName("TextBox_GameLocation") as TextBox;
+            if(lcGameLoc == null)
             {
                 throw new ApplicationException("INTERNAL ERROR: Could not find GameLocation TextBox");
             }
 
-            TextBox? lrcModLoc = this.FindName("TextBox_WorkshopLocation") as TextBox;
-            if (lrcModLoc == null)
+            TextBox? lcModLoc = this.FindName("TextBox_WorkshopLocation") as TextBox;
+            if (lcModLoc == null)
             {
                 throw new ApplicationException("INTERNAL ERROR: Could not find ModLocation TextBox");
             }
@@ -79,17 +79,17 @@ namespace HaloRuns_Workshop_Overlay
                 throw new ApplicationException("INTERNAL ERROR: Could not open configuration despite it being successfully created");
             }
 
-            mrcGameLocBox = lrcGameLoc;
-            mrcModLocBox = lrcModLoc;
+            mcGameLocBox = lcGameLoc;
+            mcModLocBox = lcModLoc;
 
-            mrcGameLocBox.Text = lsParams.mrcGameLocation;
-            mrcModLocBox.Text = lsParams.mrcModLocation;
+            mcGameLocBox.Text = lsParams.mcGameLocation;
+            mcModLocBox.Text = lsParams.mcModLocation;
         }
 
         public static string srcDefaultSearchLocation = "C:\\Program Files (x86)\\Steam\\steamapps";
 
-        private TextBox mrcGameLocBox;
-        private TextBox mrcModLocBox;
-        private static string srcJsonConfig = "./Config.json";
+        private TextBox mcGameLocBox;
+        private TextBox mcModLocBox;
+        private static string scJsonConfig = "./Config.json";
     }
 }

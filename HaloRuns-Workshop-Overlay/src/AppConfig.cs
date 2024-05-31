@@ -7,38 +7,38 @@ namespace HaloRuns_Workshop_Overlay.src
     public class AppConfig
     {
         // NOTE: Instance creation is not thread safe, only do once at startup
-        public static void CreateInstance(in string arcJsonFile)
+        public static void CreateInstance(in string acJsonFile)
         {
-            if(srcInstance != null)
+            if(scInstance != null)
             {
                 // This is a bug, throw exception
                 throw new ApplicationException(
                     "Tried to create Configuration instance, but instance already created");
             }
 
-            srcInstance = new AppConfig(arcJsonFile);
+            scInstance = new AppConfig(acJsonFile);
         }
 
         public static AppConfig GetInstance()
         {
-            if (srcInstance == null)
+            if (scInstance == null)
             {
                 // This is a bug, throw exception
                 throw new ApplicationException(
                     "Tried to get Configuration instance, but instance never created");
             }
 
-            return srcInstance;
+            return scInstance;
         }
 
         public ConfigParams? ReadFromConfig()
         {
-            lock(mrcMutex)
+            lock(mcMutex)
             {
                 ConfigParams? lcParams = null;
                 try
                 {
-                    string lcFileText = File.ReadAllText(mrcJsonFile);
+                    string lcFileText = File.ReadAllText(mcJsonFile);
                     lcParams = JsonSerializer.Deserialize<ConfigParams>(lcFileText);
                 }
                 catch (Exception)
@@ -50,34 +50,34 @@ namespace HaloRuns_Workshop_Overlay.src
             }
         }
 
-        public void WriteToConfig(in ConfigParams arcParams)
+        public void WriteToConfig(in ConfigParams acParams)
         {
-            lock (mrcMutex)
+            lock (mcMutex)
             {
-                string lcJsonText = JsonSerializer.Serialize(arcParams);
-                File.WriteAllText(mrcJsonFile, lcJsonText);
+                string lcJsonText = JsonSerializer.Serialize(acParams);
+                File.WriteAllText(mcJsonFile, lcJsonText);
             }
         }
 
         public class ConfigParams
         {
-            public string mrcGameLocation { get; set; } = string.Empty;
-            public string mrcModLocation { get; set; } = string.Empty;
-            public string mrcAutoSearchLocation { get; set; } = string.Empty;
+            public string mcGameLocation { get; set; } = string.Empty;
+            public string mcModLocation { get; set; } = string.Empty;
+            public string mcAutoSearchLocation { get; set; } = string.Empty;
         }
 
-        private AppConfig(in string arcJsonFile)
+        private AppConfig(in string acJsonFile)
         {
-            mrcJsonFile = arcJsonFile;
+            mcJsonFile = acJsonFile;
         }
 
         // Static singleton instance
-        private static AppConfig? srcInstance = null;
+        private static AppConfig? scInstance = null;
 
         // Mutex for locking
-        private Mutex mrcMutex = new Mutex();
+        private Mutex mcMutex = new Mutex();
 
-        private string mrcJsonFile = string.Empty;
+        private string mcJsonFile = string.Empty;
 
     }
 }

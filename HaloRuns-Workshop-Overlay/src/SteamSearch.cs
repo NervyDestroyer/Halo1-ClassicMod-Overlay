@@ -4,14 +4,14 @@ namespace HaloRuns_Workshop_Overlay.src
     public static class SteamSearch
     {
         public static bool FindGameLocation(
-            in string arcPathToSearch,
+            in string acPathToSearch,
             out string arcGameLocation,
             out string arcErrStr)
         {
             arcGameLocation = string.Empty;
             arcErrStr = string.Empty;
 
-            string lcMccLoc = $"{arcPathToSearch}/common/{srcGameName}";
+            string lcMccLoc = $"{acPathToSearch}/common/{scGameName}";
             if(!Directory.Exists(lcMccLoc))
             {
                 arcErrStr = $"MCC not found at {lcMccLoc}";
@@ -31,14 +31,14 @@ namespace HaloRuns_Workshop_Overlay.src
         }
 
         public static bool FindModLocation(
-            in string arcPathToSearch,
+            in string acPathToSearch,
             out string arcMod,
             out string arcErrStr)
         {
             arcMod = string.Empty;
             arcErrStr = string.Empty;
 
-            string lcModLoc = $"{arcPathToSearch}/workshop/content/{srcGameId}/{srcModId}/maps";
+            string lcModLoc = $"{acPathToSearch}/workshop/content/{scGameId}/{scModId}/maps";
             if (!Directory.Exists(lcModLoc))
             {
                 arcErrStr = $"Workshop mod not found at {lcModLoc}. Make sure the Classic Mod is installed on the Steam Workshop page.";
@@ -50,8 +50,8 @@ namespace HaloRuns_Workshop_Overlay.src
             return true;
         }
 
-        private static string srcGameName = "Halo The Master Chief Collection";
-        private static string srcGameId = "976730";
-        private static string srcModId = "3249878452";
+        private static string scGameName = "Halo The Master Chief Collection";
+        private static string scGameId = "976730";
+        private static string scModId = "3249878452";
     }
 }
