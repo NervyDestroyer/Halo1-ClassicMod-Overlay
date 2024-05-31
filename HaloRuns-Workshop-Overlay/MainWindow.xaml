@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HaloRuns_Workshop_Overlay"
         mc:Ignorable="d"
-        Title="Halo CE Classic Mod Overlay" Height="225" Width="600">
+        Title="Halo CE Classic Mod Overlay" Height="225" Width="600" Icon="resources/HaloRunsLogo.ico">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

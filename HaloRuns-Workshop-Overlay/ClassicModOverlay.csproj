@@ -7,6 +7,14 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>resources\HaloRunsLogo.ico</ApplicationIcon>
   </PropertyGroup>
-
+  
+  <!-- Include Icon -->
+  <ItemGroup>
+    <Content Include="resources\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  
 </Project>
